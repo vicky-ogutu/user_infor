@@ -1,123 +1,209 @@
+// ===================== Geo =====================
 
 class Geo {
-  String lat;
-  String lng;
+  final String lat;
+  final String lng;
 
-  Geo({required this.lat, required this.lng});
-  Geo.fromJson(Map<String, dynamic> json)
-      : lat = json['lat'] ?? '0.0',
-        lng = json['lng'] ?? '0.0';
+  const Geo({
+    required this.lat,
+    required this.lng,
+  });
 
-  Map<String, dynamic> toJson() {
+  factory Geo.fromJson(Map<String, dynamic> json) {
+    return Geo(
+      lat: json['lat']?.toString() ?? '0.0',
+      lng: json['lng']?.toString() ?? '0.0',
+    );
+  }
+
+  factory Geo.fromMap(Map<dynamic, dynamic> map) {
+    return Geo(
+      lat: map['lat']?.toString() ?? '0.0',
+      lng: map['lng']?.toString() ?? '0.0',
+    );
+  }
+
+  Map<String, dynamic> toMap() {
     return {
       'lat': lat,
       'lng': lng,
     };
   }
+
+  Map<String, dynamic> toJson() {
+    return toMap();
+  }
 }
 
-class Address {
-  String street;
-  String suite;
-  String city;
-  String zipcode;
-  Geo? geo;
+// ===================== Address =====================
 
-  Address({
+class Address {
+  final String street;
+  final String suite;
+  final String city;
+  final String zipcode;
+  final Geo? geo;
+
+  const Address({
     required this.street,
     required this.suite,
     required this.city,
     required this.zipcode,
-    this.geo, // optional
+    this.geo,
   });
 
-  Address.fromJson(Map<String, dynamic> json)
-      : street = json['street'] ?? '',
-        suite = json['suite'] ?? '',
-        city = json['city'] ?? '',
-        zipcode = json['zipcode'] ?? '',
-        geo = json['geo'] != null ? Geo.fromJson(json['geo']) : null;
+  factory Address.fromJson(Map<String, dynamic> json) {
+    return Address(
+      street: json['street'] ?? '',
+      suite: json['suite'] ?? '',
+      city: json['city'] ?? '',
+      zipcode: json['zipcode'] ?? '',
+      geo: json['geo'] != null
+          ? Geo.fromJson(json['geo'])
+          : null,
+    );
+  }
 
-  Map<String, dynamic> toJson() {
+  factory Address.fromMap(Map<dynamic, dynamic> map) {
+    return Address(
+      street: map['street'] ?? '',
+      suite: map['suite'] ?? '',
+      city: map['city'] ?? '',
+      zipcode: map['zipcode'] ?? '',
+      geo: map['geo'] != null
+          ? Geo.fromMap(map['geo'])
+          : null,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
     final data = <String, dynamic>{
       'street': street,
       'suite': suite,
       'city': city,
       'zipcode': zipcode,
     };
+
     if (geo != null) {
-      data['geo'] = geo!.toJson();
+      data['geo'] = geo!.toMap();
     }
+
     return data;
+  }
+
+  Map<String, dynamic> toJson() {
+    return toMap();
   }
 }
 
 // ===================== Company =====================
-class Company {
-  String name;
-  String? catchPhrase; // optional
-  String? bs;          // optional
 
-  Company({
+class Company {
+  final String name;
+  final String? catchPhrase;
+  final String? bs;
+
+  const Company({
     required this.name,
     this.catchPhrase,
     this.bs,
   });
 
-  Company.fromJson(Map<String, dynamic> json)
-      : name = json['name'] ?? '',
-        catchPhrase = json['catchPhrase'],
-        bs = json['bs'];
+  factory Company.fromJson(Map<String, dynamic> json) {
+    return Company(
+      name: json['name'] ?? '',
+      catchPhrase: json['catchPhrase'],
+      bs: json['bs'],
+    );
+  }
 
-  Map<String, dynamic> toJson() {
+  factory Company.fromMap(Map<dynamic, dynamic> map) {
+    return Company(
+      name: map['name'] ?? '',
+      catchPhrase: map['catchPhrase'],
+      bs: map['bs'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
     final data = <String, dynamic>{
       'name': name,
     };
+
     if (catchPhrase != null) {
       data['catchPhrase'] = catchPhrase;
     }
+
     if (bs != null) {
       data['bs'] = bs;
     }
+
     return data;
+  }
+
+  Map<String, dynamic> toJson() {
+    return toMap();
   }
 }
 
 // ===================== User =====================
-class User {
-  int id;
-  String name;
-  String username;
-  String email;
-  Address? address; // optional
-  String phone;
-  String website;
-  Company company; // required (always present)
 
-  User({
+class User {
+  final int id;
+  final String name;
+  final String username;
+  final String email;
+  final Address? address;
+  final String phone;
+  final String website;
+  final Company company;
+
+  const User({
     required this.id,
     required this.name,
     required this.username,
     required this.email,
-    this.address, // no 'required' because it can be null
+    this.address,
     required this.phone,
     required this.website,
     required this.company,
   });
 
-  User.fromJson(Map<String, dynamic> json)
-      : id = json['id'] ?? 0,
-        name = json['name'] ?? '',
-        username = json['username'] ?? '',
-        email = json['email'] ?? '',
-        address = json['address'] != null ? Address.fromJson(json['address']) : null,
-        phone = json['phone'] ?? '',
-        website = json['website'] ?? '',
-        company = json['company'] != null
-            ? Company.fromJson(json['company'])
-            : Company(name: 'Unknown'); // fallback if company is missing
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      username: json['username'] ?? '',
+      email: json['email'] ?? '',
+      address: json['address'] != null
+          ? Address.fromJson(json['address'])
+          : null,
+      phone: json['phone'] ?? '',
+      website: json['website'] ?? '',
+      company: json['company'] != null
+          ? Company.fromJson(json['company'])
+          : const Company(name: 'Unknown'),
+    );
+  }
 
-  Map<String, dynamic> toJson() {
+  factory User.fromMap(Map<dynamic, dynamic> map) {
+    return User(
+      id: map['id'] ?? 0,
+      name: map['name'] ?? '',
+      username: map['username'] ?? '',
+      email: map['email'] ?? '',
+      address: map['address'] != null
+          ? Address.fromMap(map['address'])
+          : null,
+      phone: map['phone'] ?? '',
+      website: map['website'] ?? '',
+      company: map['company'] != null
+          ? Company.fromMap(map['company'])
+          : const Company(name: 'Unknown'),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
     final data = <String, dynamic>{
       'id': id,
       'name': name,
@@ -125,11 +211,17 @@ class User {
       'email': email,
       'phone': phone,
       'website': website,
-      'company': company.toJson(),
+      'company': company.toMap(),
     };
+
     if (address != null) {
-      data['address'] = address!.toJson();
+      data['address'] = address!.toMap();
     }
+
     return data;
+  }
+
+  Map<String, dynamic> toJson() {
+    return toMap();
   }
 }
