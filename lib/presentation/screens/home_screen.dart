@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:user_infor/presentation/screens/post_screen.dart';
 import 'package:user_infor/presentation/screens/todos_screen.dart';
 import 'package:user_infor/presentation/screens/users_screen.dart';
 
@@ -47,6 +48,22 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) =>
                     const TodosScreen(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 20),
+            _HomeCard(
+              title: 'Posts',
+              subtitle:
+              'View Posts',
+              icon: Icons.check_circle,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                    const PostScreen(),
                   ),
                 );
               },
